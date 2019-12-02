@@ -1,0 +1,88 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+
+namespace basic_calculator
+{
+    public partial class Calculator : Form
+    {
+        string operators ="";
+        double result=0;
+        bool status = false;
+        public Calculator()
+        {
+            InitializeComponent();
+        }
+
+        private void button_click(object sender, EventArgs e)
+        {
+            if( (outputtxtbox.Text == "0")||(status))
+            outputtxtbox.Clear();
+            status = false;
+            Button number = (Button)sender;
+            if (number.Text == ".")
+            {
+                if (!outputtxtbox.Text.Contains("."))
+             outputtxtbox.Text=outputtxtbox.Text + number.Text;
+            }
+            else
+            outputtxtbox.Text=outputtxtbox.Text + number.Text;
+        }
+
+        private void clear_entry(object sender, EventArgs e)
+        {
+            outputtxtbox.Text = "0";
+        }
+
+        private void clear(object sender, EventArgs e)
+        {
+            outputtxtbox.Text = "0";
+            result = 0; 
+        }
+
+        private void operator_click(object sender, EventArgs e)
+        {
+            Button number = (Button)sender;
+            if (result != 0)
+            {
+                butequal.PerformClick();
+                operators = number.Text;
+                status_label.Text = result + " " + operators;
+                status = true;
+            }
+            else
+            {
+                operators = number.Text;
+                result = double.Parse(outputtxtbox.Text);
+                status_label.Text = result + " " + operators;
+                status = true;
+            }
+        }
+
+        private void equal_to(object sender, EventArgs e)
+        {
+            switch (operators)
+            { 
+                case "+":
+                    outputtxtbox.Text = (result + double.Parse(outputtxtbox.Text)).ToString();
+                    break;
+                case "-":
+                    outputtxtbox.Text = (result - double.Parse(outputtxtbox.Text)).ToString();
+                    break;
+                case "*":
+                    outputtxtbox.Text = (result * double.Parse(outputtxtbox.Text)).ToString();
+                    break;
+                case "/":
+                    outputtxtbox.Text = (result / double.Parse(outputtxtbox.Text)).ToString();
+                    break;
+            }
+            result = double.Parse(outputtxtbox.Text);
+            status_label.Text = "";
+        }
+    }
+}
